@@ -19,15 +19,29 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        // handle .js, .mjs, .jsx (TS later if you want)
+        test: /\.m?jsx?$/,
+        include: path.resolve(__dirname, "src"),
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
+            // Use ONLY these options (ignore any external babel config)
+            babelrc: false,
+            configFile: false,
+            // Always parse as ESM so import/export in .js is allowed
+            sourceType: "module",
+            // Transform modern JS + JSX
             presets: [
               ["@babel/preset-env", { targets: "defaults" }],
               ["@babel/preset-react", { runtime: "automatic" }],
             ],
+            // Belt-and-braces: also enable JSX parser directly
+            parserOpts: {
+              sourceType: "module",
+              plugins: ["jsx"],
+            },
+            cacheDirectory: false,
           },
         },
       },
@@ -37,7 +51,9 @@ module.exports = {
       },
     ],
   },
-  resolve: { extensions: [".js", ".jsx"] },
+  resolve: {
+    extensions: [".mjs", ".js", ".jsx"],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "public/index.html"),

@@ -27,7 +27,7 @@ export default function Viewer3D() {
         <Furniture />
         <OrbitControls enableDamping dampingFactor={0.08} />
       </Canvas>
-      <div className="pointer-events-none absolute bottom-2 right-2 rounded-lg bg-white/90 px-2 py-1 text-xs text-stone-600 shadow-sm">
+      <div className="absolute px-2 py-1 text-xs rounded-lg shadow-sm pointer-events-none bottom-2 right-2 bg-white/90 text-stone-600">
         Tip: drag to orbit • wheel to zoom
       </div>
     </div>

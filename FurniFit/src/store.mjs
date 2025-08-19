@@ -23,22 +23,45 @@ const defaults = {
 };
 
 export const useDesign = create((set, get) => ({
-  // state
+  // -------- state --------
   loggedIn: true,
-  room: { width: 600, depth: 400, color: "#f8fafc" },
+  room: {
+    width: 600,
+    depth: 400,
+    color: "#f8fafc",
+    shape: "rect", // "rect" | "lshape"
+    notchW: 120, // used when shape = "lshape"
+    notchH: 120, // used when shape = "lshape"
+    notchCorner: "top-right", // "top-right" | "top-left" | "bottom-right" | "bottom-left"
+  },
   items: [],
   selectedId: null,
 
-  // auth
+  // -------- auth --------
   setLoggedIn: (v) => set({ loggedIn: v }),
 
-  // selection
+  // -------- selection --------
   select: (id) => set({ selectedId: id }),
 
-  // room
-  setRoom: (patch) => set({ room: { ...get().room, ...patch } }),
+  // -------- room --------
+  setRoom: (patch) => {
+    const cur = get().room;
+    const next = { ...cur, ...patch };
 
-  // items
+    // keep notch sizes valid & inside the room when L-shape
+    if (next.shape === "lshape") {
+      const maxW = Math.max(20, (next.width ?? cur.width) - 20);
+      const maxH = Math.max(20, (next.depth ?? cur.depth) - 20);
+      next.notchW = Math.max(10, Math.min(next.notchW ?? cur.notchW, maxW));
+      next.notchH = Math.max(10, Math.min(next.notchH ?? cur.notchH, maxH));
+      // ensure notchCorner is valid
+      const corners = ["top-right", "top-left", "bottom-right", "bottom-left"];
+      if (!corners.includes(next.notchCorner)) next.notchCorner = "top-right";
+    }
+    set({ room: next });
+  },
+
+  // -------- items --------
   addItem: (type) => {
     const d = defaults[type] || { w: 80, h: 80, color: "#e5e7eb" };
     const item = {
@@ -54,13 +77,14 @@ export const useDesign = create((set, get) => ({
     set({ items: [...get().items, item], selectedId: item.id });
   },
 
-  // NEW: add from catalog by SKU (uses nicer defaults)
+  // Add from catalog (keeps the image for 2D editor)
   addFromCatalog: (sku) => {
     const p = catalogBySku(sku);
     if (!p) return;
     const item = {
       id: uid(),
       type: p.type,
+      image: p.image,
       x: 10 + Math.random() * 20,
       y: 10 + Math.random() * 20,
       w: p.w,
@@ -97,7 +121,39 @@ export const useDesign = create((set, get) => ({
       })),
     }),
 
-  // file I/O
+  // -------- selection tools (Sidebar) --------
+  duplicateSelected: () => {
+    const { items, selectedId } = get();
+    const it = items.find((i) => i.id === selectedId);
+    if (!it) return;
+    const nid = uid();
+    const copy = { ...it, id: nid, x: it.x + 10, y: it.y + 10 };
+    set({ items: [...items, copy], selectedId: nid });
+  },
+
+  bringToFront: () => {
+    const { items, selectedId } = get();
+    const idx = items.findIndex((i) => i.id === selectedId);
+    if (idx < 0) return;
+    const next = items.slice();
+    const [it] = next.splice(idx, 1);
+    next.push(it);
+    set({ items: next });
+  },
+
+  sendToBack: () => {
+    const { items, selectedId } = get();
+    const idx = items.findIndex((i) => i.id === selectedId);
+    if (idx < 0) return;
+    const next = items.slice();
+    const [it] = next.splice(idx, 1);
+    next.unshift(it);
+    set({ items: next });
+  },
+
+  clearAll: () => set({ items: [], selectedId: null }),
+
+  // -------- file I/O --------
   saveJSON: () => {
     const data = JSON.stringify(
       { room: get().room, items: get().items },

@@ -3,9 +3,9 @@ import { useDesign } from "../store";
 import { useToasts } from "../toast.mjs";
 import { scaleToFit } from "../utils";
 
-export default function Sidebar() {
+export default function Sidebar({ onOpenCatalog }) {
   const {
-    room, setRoom, items, addItem, selectedId, deleteSelected,
+    room, setRoom, items, selectedId, deleteSelected,
     setAllColor, setAllShade, scaleAll, saveJSON, loadJSON
   } = useDesign();
   const fileRef = useRef(null);
@@ -37,8 +37,6 @@ export default function Sidebar() {
   return (
     <div className="grid content-start gap-5 text-sm">
       {/* Room */}
-
-      
       <section>
         <h3 className="mb-2 text-[12px] font-semibold tracking-widest text-stone-500 uppercase">Room</h3>
         <div className="grid grid-cols-2 gap-3">
@@ -51,27 +49,35 @@ export default function Sidebar() {
             <input type="number" value={room.depth} onChange={(e)=>setRoom({ depth:+e.target.value })} className={inputCls}/>
           </label>
         </div>
-        <label className="mt-3 block">
+        <label className="block mt-3">
           <span className="block">Colour</span>
           <input type="color" value={room.color} onChange={(e)=>setRoom({ color:e.target.value })}
-                 className="mt-1 h-10 w-full rounded-xl border border-stone-300"/>
+                 className="w-full h-10 mt-1 border rounded-xl border-stone-300"/>
         </label>
       </section>
 
-      {/* Items */}
+      {/* Items (simplified) */}
       <section>
         <h3 className="mb-2 text-[12px] font-semibold tracking-widest text-stone-500 uppercase">Items</h3>
         <div className="flex flex-wrap gap-2">
-          <button onClick={()=>addItem("table")} className={primaryBtn}>Add Table</button>
-          <button onClick={()=>addItem("chair")} className={primaryBtn}>Add Chair</button>
-          <button onClick={deleteSelected} disabled={!selectedId} className={dangerBtn}>Delete Selected</button>
-          <button onClick={doScaleToFit} className={ghostBtn}>Scale to Fit</button>
+          <button
+            onClick={onOpenCatalog}
+            className={primaryBtn}
+          >
+            Browse Catalog
+          </button>
+          <button onClick={deleteSelected} disabled={!selectedId} className={dangerBtn}>
+            Delete Selected
+          </button>
+          <button onClick={doScaleToFit} className={ghostBtn}>
+            Scale to Fit
+          </button>
         </div>
       </section>
 
       {/* Hint */}
       <section>
-        <div className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 text-stone-600">
+        <div className="px-3 py-2 border rounded-xl border-stone-200 bg-stone-50 text-stone-600">
           {selectedId ? "Item selected — edit in Properties" : "No item selected"}
         </div>
       </section>
@@ -81,14 +87,14 @@ export default function Sidebar() {
         <h3 className="mb-2 text-[12px] font-semibold tracking-widest text-stone-500 uppercase">Bulk operations</h3>
         <label className="block">
           <span className="block">Colour (all)</span>
-          <input type="color" onChange={(e)=>setAllColor(e.target.value)} className="mt-1 h-10 w-full rounded-xl border border-stone-300"/>
+          <input type="color" onChange={(e)=>setAllColor(e.target.value)} className="w-full h-10 mt-1 border rounded-xl border-stone-300"/>
         </label>
-        <label className="mt-3 block">
+        <label className="block mt-3">
           <span className="block">Shade (all)</span>
           <input type="range" min="0" max="1" step="0.05" defaultValue="0.2"
-                 onChange={(e)=>setAllShade(+e.target.value)} className="mt-2 w-full"/>
+                 onChange={(e)=>setAllShade(+e.target.value)} className="w-full mt-2"/>
         </label>
-        <label className="mt-3 block">
+        <label className="block mt-3">
           <span className="block">Scale (all)</span>
           <input type="number" step="0.1" defaultValue="1"
                  onChange={(e)=>scaleAll(+e.target.value || 1)} className={inputCls}/>
@@ -102,7 +108,9 @@ export default function Sidebar() {
           <button
             onClick={() => { saveJSON(); push({ title: "Design saved", desc: "JSON downloaded" }); }}
             className={primaryBtn}
-          >Save</button>
+          >
+            Save
+          </button>
           <button onClick={()=>fileRef.current?.click()} className={ghostBtn}>Load</button>
           <input
             ref={fileRef} type="file" accept="application/json" className="hidden"

@@ -14,7 +14,7 @@ export default function App() {
   if (!loggedIn) {
     return (
       <div className="grid h-screen place-items-center bg-gradient-to-br from-[#f8f5f0] to-[#f3efe8]">
-        <div className="w-80 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm">
+        <div className="p-6 bg-white border shadow-sm w-80 rounded-2xl border-stone-200">
           <h2 className="text-xl" style={{fontFamily:'"Playfair Display",serif'}}>FurniFit</h2>
           <p className="mt-1 text-sm text-stone-600">Designer login (demo)</p>
           <button
@@ -31,10 +31,10 @@ export default function App() {
   return (
     <div className="grid h-screen grid-rows-[auto_1fr] bg-gradient-to-br from-[#f8f5f0] to-[#f3efe8]">
       <header className="sticky top-0 z-10 text-white shadow bg-gradient-to-r from-[#2f3e2c] to-[#485f3b]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between max-w-6xl px-4 py-3 mx-auto">
           <div className="flex items-center gap-3">
             {/* your logo + title */}
-            <img src="/logo.png" alt="FurniFit" className="h-8 w-8 rounded-lg object-contain" />
+            <img src="/logo.png" alt="FurniFit" className="object-contain w-8 h-8 rounded-lg" />
             <span className="text-lg" style={{ fontFamily: '"Playfair Display",serif' }}>FurniFit</span>
           </div>
 
@@ -42,12 +42,12 @@ export default function App() {
             {/* open catalog button */}
             <button
               onClick={() => setCatalogOpen(true)}
-              className="rounded-xl bg-white/15 px-3 py-1 text-sm ring-1 ring-white/25 backdrop-blur hover:bg-white/20"
+              className="px-3 py-1 text-sm rounded-xl bg-white/15 ring-1 ring-white/25 backdrop-blur hover:bg-white/20"
             >
               Browse Catalog
             </button>
 
-            <div className="inline-flex rounded-xl bg-white/10 p-1 ring-1 ring-white/20">
+            <div className="inline-flex p-1 rounded-xl bg-white/10 ring-1 ring-white/20">
               <button onClick={() => setMode("2D")} className={`rounded-lg px-3 py-1 text-sm transition ${mode === "2D" ? "bg-white text-stone-900 shadow" : "text-white/90 hover:bg-white/10"}`}>2D</button>
               <button onClick={() => setMode("3D")} className={`rounded-lg px-3 py-1 text-sm transition ${mode === "3D" ? "bg-white text-stone-900 shadow" : "text-white/90 hover:bg-white/10"}`}>3D</button>
             </div>
@@ -57,10 +57,10 @@ export default function App() {
 
       {/* Main */}
       <main className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 p-4 md:grid-cols-[320px_1fr]">
-        <aside className="sticky top-24 h-fit rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
+        <aside className="sticky p-4 bg-white border shadow-sm top-24 h-fit rounded-2xl border-stone-200">
           <Sidebar />
         </aside>
-        <section className="min-h-0 rounded-2xl border border-stone-200 bg-white p-2 shadow-sm">
+        <section className="min-h-0 p-2 bg-white border shadow-sm rounded-2xl border-stone-200">
           {mode === "2D" ? <Editor2D /> : <Viewer3D />}
         </section>
       </main>

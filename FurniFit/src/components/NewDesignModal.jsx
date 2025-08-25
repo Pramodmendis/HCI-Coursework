@@ -1,4 +1,3 @@
-// src/components/NewDesignModal.jsx
 import { useEffect, useState } from "react";
 
 export default function NewDesignModal({ open, onClose, room, onApply, hasItems }) {
@@ -10,7 +9,6 @@ export default function NewDesignModal({ open, onClose, room, onApply, hasItems 
   const [notchH, setNotchH] = useState(room.notchH ?? 120);
   const [notchCorner, setNotchCorner] = useState(room.notchCorner ?? "top-right");
 
-  // when opening, sync with current room
   useEffect(() => {
     if (!open) return;
     setWidth(room.width);
@@ -31,7 +29,6 @@ export default function NewDesignModal({ open, onClose, room, onApply, hasItems 
   return (
     <div className="fixed inset-0 z-[120] overflow-y-auto bg-black/30 backdrop-blur-sm">
       <div className="mx-auto my-10 w-[min(560px,100%)] rounded-2xl border border-stone-200 bg-white shadow-xl">
-        {/* header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-stone-200">
           <div>
             <div className="font-semibold" style={{ fontFamily: '"Playfair Display",serif' }}>
@@ -46,7 +43,6 @@ export default function NewDesignModal({ open, onClose, room, onApply, hasItems 
           </button>
         </div>
 
-        {/* body */}
         <div className="grid gap-4 p-5">
           {hasItems && (
             <div className="p-3 text-xs border rounded-lg border-amber-300 bg-amber-50 text-amber-800">
@@ -102,7 +98,6 @@ export default function NewDesignModal({ open, onClose, room, onApply, hasItems 
           )}
         </div>
 
-        {/* footer */}
         <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-stone-200">
           <button onClick={onClose} className="px-3 py-2 text-sm rounded-xl ring-1 ring-stone-200 hover:bg-stone-50">
             Cancel

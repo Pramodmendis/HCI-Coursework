@@ -111,8 +111,8 @@ export default function App() {
         room={room}
         hasItems={items.length > 0}
         onApply={(payload) => {
-          setRoom(payload);   // room size/shape/colour (store will clamp safely)
-          clearAll();         // start fresh
+          setRoom(payload);
+          clearAll();
           setNewOpen(false);
         }}
       />

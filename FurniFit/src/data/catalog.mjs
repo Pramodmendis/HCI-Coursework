@@ -1,4 +1,3 @@
-// src/data/catalog.mjs
 export const categories = [
   "Seating",
   "Tables",

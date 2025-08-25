@@ -20,11 +20,8 @@ export default function CatalogModal({ open, onClose, onAdd }) {
   if (!open) return null;
 
   return (
-    // overlay scrolls if content is taller than viewport
     <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/30 backdrop-blur-sm">
-      {/* centered panel, capped height; inside is a flex column */}
       <div className="mx-auto my-8 w-[min(1100px,100%)] rounded-2xl border border-stone-200 bg-white shadow-xl flex max-h-[85vh] flex-col">
-        {/* header (stays at top of the panel) */}
         <div className="flex items-center justify-between gap-3 px-4 py-3 border-b border-stone-200">
           <div>
             <div
@@ -45,7 +42,6 @@ export default function CatalogModal({ open, onClose, onAdd }) {
           </button>
         </div>
 
-        {/* controls (non-scrolling header area) */}
         <div className="flex flex-wrap items-center gap-2 px-4 py-3">
           <input
             value={q}
@@ -80,7 +76,6 @@ export default function CatalogModal({ open, onClose, onAdd }) {
           </div>
         </div>
 
-        {/* scrollable grid area */}
         <div className="flex-1 min-h-0 p-4 overflow-y-auto">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((it) => (

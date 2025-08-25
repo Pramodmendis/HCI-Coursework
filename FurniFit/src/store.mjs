@@ -1,4 +1,3 @@
-// src/store.mjs
 import { create } from "zustand";
 import { catalogBySku } from "./data/catalog.mjs";
 
@@ -29,39 +28,34 @@ export const useDesign = create((set, get) => ({
     width: 600,
     depth: 400,
     color: "#f8fafc",
-    shape: "rect", // "rect" | "lshape"
-    notchW: 120, // used when shape = "lshape"
-    notchH: 120, // used when shape = "lshape"
-    notchCorner: "top-right", // "top-right" | "top-left" | "bottom-right" | "bottom-left"
+    shape: "rect",
+    notchW: 120,
+    notchH: 120,
+    notchCorner: "top-right",
   },
   items: [],
   selectedId: null,
 
-  // -------- auth --------
   setLoggedIn: (v) => set({ loggedIn: v }),
 
-  // -------- selection --------
   select: (id) => set({ selectedId: id }),
 
-  // -------- room --------
   setRoom: (patch) => {
     const cur = get().room;
     const next = { ...cur, ...patch };
 
-    // keep notch sizes valid & inside the room when L-shape
     if (next.shape === "lshape") {
       const maxW = Math.max(20, (next.width ?? cur.width) - 20);
       const maxH = Math.max(20, (next.depth ?? cur.depth) - 20);
       next.notchW = Math.max(10, Math.min(next.notchW ?? cur.notchW, maxW));
       next.notchH = Math.max(10, Math.min(next.notchH ?? cur.notchH, maxH));
-      // ensure notchCorner is valid
+
       const corners = ["top-right", "top-left", "bottom-right", "bottom-left"];
       if (!corners.includes(next.notchCorner)) next.notchCorner = "top-right";
     }
     set({ room: next });
   },
 
-  // -------- items --------
   addItem: (type) => {
     const d = defaults[type] || { w: 80, h: 80, color: "#e5e7eb" };
     const item = {
@@ -77,7 +71,6 @@ export const useDesign = create((set, get) => ({
     set({ items: [...get().items, item], selectedId: item.id });
   },
 
-  // Add from catalog (keeps the image for 2D editor)
   addFromCatalog: (sku) => {
     const p = catalogBySku(sku);
     if (!p) return;
@@ -121,7 +114,6 @@ export const useDesign = create((set, get) => ({
       })),
     }),
 
-  // -------- selection tools (Sidebar) --------
   duplicateSelected: () => {
     const { items, selectedId } = get();
     const it = items.find((i) => i.id === selectedId);
@@ -153,7 +145,6 @@ export const useDesign = create((set, get) => ({
 
   clearAll: () => set({ items: [], selectedId: null }),
 
-  // -------- file I/O --------
   saveJSON: () => {
     const data = JSON.stringify(
       { room: get().room, items: get().items },

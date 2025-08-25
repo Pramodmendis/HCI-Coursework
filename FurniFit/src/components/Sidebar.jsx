@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useDesign } from "../store";
 import { useToasts } from "../toast.mjs";
 import { scaleToFit } from "../utils";
-import ItemProperties from "./ItemProperties"; // keep if you created it
+import ItemProperties from "./ItemProperties";
 
 export default function Sidebar() {
   const {

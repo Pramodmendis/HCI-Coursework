@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { useDesign } from "../store";
 import { clamp } from "../utils";
 
-// fallback mapping if a manual add (addItem) has no image set
 const TYPE_TO_IMG = {
   chair: "/furniture/armchair-velvet.png",
   table: "/furniture/coffee-table-walnut.png",
@@ -22,30 +21,29 @@ const TYPE_TO_IMG = {
   plant: "/furniture/indoor-plant.png",
 };
 
-// --- room polygon helpers ---
 function lShapePoints({ width: W, depth: D, notchW: nW, notchH: nH, notchCorner }) {
-  // ensure safe values
+
   const w = Math.min(Math.max(10, nW || 0), Math.max(10, W - 10));
   const h = Math.min(Math.max(10, nH || 0), Math.max(10, D - 10));
   switch (notchCorner) {
     case "top-left":
-      // notch cut at top-left
+
       return [
         [0, 0], [w, 0], [w, h], [W, h], [W, D], [0, D],
       ];
     case "bottom-right":
-      // notch cut at bottom-right
+
       return [
         [0, 0], [W, 0], [W, D], [W - w, D], [W - w, D - h], [0, D - h],
       ];
     case "bottom-left":
-      // notch cut at bottom-left
+
       return [
         [0, 0], [W, 0], [W, D - h], [w, D - h], [w, D], [0, D],
       ];
     case "top-right":
     default:
-      // notch cut at top-right
+
       return [
         [0, 0], [W, 0], [W, h], [W - w, h], [W - w, D], [0, D],
       ];
@@ -54,8 +52,7 @@ function lShapePoints({ width: W, depth: D, notchW: nW, notchH: nH, notchCorner 
 
 const ptsToAttr = (pts) => pts.map(([x, y]) => `${x},${y}`).join(" ");
 
-// --- dimension helpers (unchanged) ---
-const nice = (n) => Math.round(n); // cm
+const nice = (n) => Math.round(n);
 const badgeW = (text) => text.length * 6 + 12;
 const drawBadge = (cx, cy, text, rotated = false) => (
   <g transform={rotated ? `rotate(-90 ${cx} ${cy})` : undefined} pointerEvents="none">
@@ -126,7 +123,6 @@ export default function Editor2D() {
     backgroundSize: "24px 24px",
   };
 
-  // draw dimensions for the selected item
   const drawDims = (it) => {
     const olive = "#4E5F3D";
     const tick = 5;

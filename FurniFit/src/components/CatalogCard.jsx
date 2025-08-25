@@ -1,9 +1,8 @@
-// src/components/CatalogCard.jsx
 export default function CatalogCard({ item, onAdd }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+    <div className="overflow-hidden bg-white border shadow-sm rounded-2xl border-stone-200">
       <div className="aspect-[4/3] w-full overflow-hidden bg-stone-100">
-        <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
+        <img src={item.image} alt={item.name} className="object-contain w-full h-full" />
       </div>
 
       <div className="p-3">
@@ -14,7 +13,7 @@ export default function CatalogCard({ item, onAdd }) {
           </div>
         </div>
 
-        <div className="mt-3 flex items-center justify-between text-xs text-stone-500">
+        <div className="flex items-center justify-between mt-3 text-xs text-stone-500">
           <span>{item.w} × {item.h} cm</span>
           <span className="rounded-full bg-stone-100 px-2 py-0.5">{item.category}</span>
         </div>

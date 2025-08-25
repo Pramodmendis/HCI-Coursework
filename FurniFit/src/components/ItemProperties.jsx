@@ -1,4 +1,3 @@
-// src/components/ItemProperties.jsx
 import { useDesign } from "../store";
 
 export default function ItemProperties() {
